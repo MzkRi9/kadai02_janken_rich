@@ -1,0 +1,115 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "Kaisei Decol", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.backimg::before {
+  position: fixed;
+  background-image: url(../image/background.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  width: 100%;
+  z-index: -1;
+  content:'';
+}
+
+.main {
+    text-align: center;
+}
+
+.game {
+    position: fixed;
+    margin-top: 10%;
+    margin-left: 12%;
+}
+
+p {
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 15px;
+}
+
+#user {
+    align-items: self-end;
+    margin-top: 80px;
+    gap: 30px;
+    font-size: 20px;
+    color: aliceblue;
+    display: flex;
+}
+
+#pc {
+    align-items: self-end;
+    margin-top: 80px;
+    gap: 30px;
+    font-size: 20px;
+    color: aliceblue;
+    display: flex;
+}
+
+.usercard {
+    overflow: visible;
+    transition-duration: 0.3s;
+    width: 75px;
+    margin:0 25px;
+}
+
+.usercard:hover {
+    transform: scale(1.1,1.1);
+    transition-duration: 0.3s;
+}
+
+.answer {
+    position: fixed;
+    margin-top: 18%;
+    margin-left: 61%;
+    width: 350px;
+    height: 350px;
+    background-color: #eee4cb;
+    border-radius:10px;
+}
+
+.explanation{
+    color: #654f42;
+    font-size: 16px;
+    padding: 30px;
+    text-align: justify;
+
+}
+
+#text {
+    margin-top: 15px;
+    height: 155px;
+}
+
+.nextcard {
+    width: 180px;
+    height: 45px;
+    font-size: 22px;
+    color:  #eee4cb;
+    background-color: #654f42;
+    border: none;
+    font-family: "Kaisei Decol", serif;
+    font-weight: 400;
+    font-style: normal;
+    border-radius:10px;
+}
+
+.nextcard:hover {
+    box-shadow: 5px 5px #b2a78b;
+}
+
+.nextcard:active {
+    box-shadow: 0 0;
+    transform: translate(5px, 5px);
+}
+
+.musicbtn {
+    position: fixed;
+    right: 5.5%;
+    top: 13%;
+}

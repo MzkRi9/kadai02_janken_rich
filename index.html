@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【原神】元素反応論</title>
+    <link rel="stylesheet" href="./CSS/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol&family=Yusei+Magic&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="backimg">
+        <div class="title" style="position: fixed; margin: 4% 0; width: 100%; text-align: center; align-content: center;">
+            <div class="ja" style="font-size: 45px; text-align: center;">元素反応論</div>
+            <div class="en" style="font-size: 20px; text-align: center;">Genshin Element</div>
+        </div>  
+    </div>
+    
+    <div class="main">
+        <div class="game">
+            <div id="user">
+                <div>
+                    <img src="./image/sanbing.png" style="width: 110px;">
+                    <div style="font-size: 25px;">旅人が出すカードは…</div>
+                </div>
+                <div>
+                    <img class="usercard" src="./image/card_back.webp" style="width: 80px; margin:0 25px; display: flex; align-items: flex-end;">
+                    <audio id="cardview" preload="auto">
+                        <source src="./audio/cardview.mp3" type="audio/mp3">
+                    </audio>
+                </div>
+                <div id="user-result" style="display: flex; align-items: flex-end;"></div>
+            </div>
+
+            <div id="pc">
+                <div>
+                    <img src="./image/monster.png" style="max-width: 110px; ">
+                    <div style="font-size: 25px;">原魔が出すカードは…</div>
+                </div>
+                <div>
+                    <img id="pccard" src="./image/card_back.webp" style="width: 80px; margin:0 25px; display: flex; align-items: flex-end;">
+                </div>
+                <div id="pc-result" style="display: flex; align-items: flex-end;"></div>
+            </div>
+        </div>
+
+        <div class="answer">
+            <div class="explanation">
+                <div style="text-align: center; margin: 5px;font-size: 25px;">説明</div>
+                <div id="text">
+                旅人が自分のカードをクリックすると、「炎元素」「氷元素」「水元素」の3つの元素カードから、ランダムで1枚を出します。その次に、原魔も3つの元素カードから、1枚を出します。原魔が出した元素が旅人の元素に被ってきた時に発生する反応をここで解説します。
+                </div>
+            </div>
+            <div>
+                <button class="usercard nextcard">カードを引く</button>
+             </div>
+        </div>
+
+        <div class="musicbtn">
+            <audio controls autoplay loop preload="metadata" controlslist="nodownload" src="./audio/bgm.mp3"></audio>
+        </div>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        //0.カードをめくる音を流す
+        (function (window, $) {
+        'use strict';
+        $.fn.useSound = function (_event, _id) {
+            var se = $(_id);
+            this.on(_event, function(){
+            se[0].currentTime = 0;
+            se[0].play();
+            });
+            return this;
+        };
+        })(this, this.jQuery);
+        $('.usercard').useSound('mousedown touchstart', '#cardview');
+        
+        //乱数処理
+        $(".usercard").on("click",function(){           
+
+            //1.ユーザがカードを選ぶ時の乱数(1~3)
+            const r1 = Math.ceil(Math.random()*3);
+            
+            //2.カードを選ぶ時に出た各乱数の結果
+            let userresult = "";
+            if(r1==1){
+                userresult = '<img src="./image/card_fire.png" width=85px>';
+            }
+            if(r1==2){
+                userresult = '<img src="./image/card_ice.png" width=85px>';
+            }
+            if(r1==3){
+                userresult = '<img src="./image/card_water.png" width=85px>';
+            }
+
+            //3.旅人のカードの表示処理            
+            $("#user-result").html(userresult);
+
+            //4. 原魔がカードを選ぶ時の乱数(1~3)
+            const r2 = Math.ceil(Math.random()*3);
+
+            //5.原魔の乱数の結果
+            let pcresult = "";
+            if(r2==1){
+                pcresult = '<img src="./image/card_fire.png" width=85px>';
+            }
+            if(r2==2){
+                pcresult = '<img src="./image/card_ice.png" width=85px>';
+            }
+            if(r2==3){
+                pcresult = '<img src="./image/card_water.png" width=85px>';
+            }
+
+            //6.原魔のカードの表示処理            
+            $("#pc-result").html(pcresult);
+
+            //7.旅人と原魔のカードを比べて結果を表示する
+            $(".nextcard").html('次のカード');
+
+            let explanatio = "";
+            if(r1===r2){
+                $("#text").html('<img src="./image/draw.png" width="50px">原魔が旅人と同じ元素を出しましたので、元素反応は発生しませんでした。');
+            }
+            if(r1==1 && r2==2){
+                $("#text").html('<img src="./image/win.png" width="50px">原魔が氷元素を出しましたが、旅人の炎元素に溶解されました。炎元素に氷元素で攻撃する場合、ダメージは通常の1.5倍です。（発生した元素反応は「溶解」です。）');
+            }
+            if(r1==1 && r2==3){
+                $("#text").html('<img src="./image/lose.png" width="50px">原魔が水元素を出しましたので、炎元素を出した旅人を蒸発しました。炎元素に水元素で攻撃する場合、ダメージは通常の2倍です。（発生した元素反応は「蒸発」です。）');
+            }
+            if(r1==2 && r2==3){
+                $("#text").html('<img src="./image/win.png" width="50px">原魔が水元素を出しましたが、旅人の氷元素に凍結されました。凍結の場合、ダメージは特に増えず、通常の数値になります。（発生した元素反応は「凍結」です。）');
+            }
+            if(r1==2 && r2==1){
+                $("#text").html('<img src="./image/lose.png" width="50px">原魔が炎元素を出しましたので、氷元素を出した旅人を溶解しました。氷元素に炎元素で攻撃する場合、ダメージは通常の2倍です。（発生した元素反応は「溶解」です。）');
+            }
+            if(r1==3 && r2==1){
+                $("#text").html('<img src="./image/win.png" width="50px">原魔が炎元素を出しましたが、旅人の水元素に蒸発されました。水元素に炎元素で攻撃する場合、ダメージは通常の1.5倍です。（発生した元素反応は「蒸発」です。）');
+            }
+            if(r1==3 && r2==2){
+                $("#text").html('<img src="./image/lose.png" width="50px">原魔が氷元素を出しましたので、水元素を出した旅人を凍結しました。凍結の場合、ダメージは特に増えず、通常の数値になります。（発生した元素反応は「凍結」です。）');
+            }
+         });
+    </script>
+
+</body>
+</html>
